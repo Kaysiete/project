@@ -7,35 +7,15 @@ require __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-use app\Database\Core;
 
 // Classes
 
 // Php code
 
 
-// initialize database connection
-new Core();
-
-try {
-	Core::exec("
-		CREATE TABLE IF NOT EXISTS menu_items (
-		id INT AUTO_INCREMENT PRIMARY KEY,
-	    naam VARCHAR(255) NOT NULL,
-	    beschrijving VARCHAR(255) NOT NULL,
-	    prijs DECIMAL(10,2) NOT NULL,
-		menu_id INT NOT NULL,
-		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-		bijgewerkt_op TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		FOREIGN KEY (menu_id) REFERENCES menus(id)
-		)
-	");
-	echo 'Table created successfully!';
-} catch (Exception $e) {
-	echo 'Error: ' . $e->getMessage();
-}
 
 // Voorbeeld database select, returnt een array:
+
 /**
 $result = Database\Core::query("select id, name from test_table where id = ? or name = ?;", [1, 'test']);
  **/
