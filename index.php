@@ -24,7 +24,7 @@ $result = Core::query(
 	[]
 );
 
-// haal menus op voor de select field
+// haal menus op
 $menus = Core::query(
 	"SELECT id, naam FROM menus ORDER BY naam",
 	[]
@@ -60,6 +60,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_menu_item'])) {
 		$form_message = '<div class="alert alert-warning alert-dismissible fade show" role="alert">Vul alle velden in.<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
 	}
 }
+
+if (isset($_POST['add_menu'])) {
+	$menuNaam = $_POST['menu_naam'] ?? '';
+	if ($menuNaam) {
+		try {
+			$ok = Core::exec(
+				"INSERT INTO menus (naam) VALUES (?);",
+				[$menuNaam]
+			);
+			if ($ok) {
+				$form_message = '<div class="alert alert-success alert-dismissible fade show" role="alert">'
+					. 'Menu succesvol toegevoegd!<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+				// lijst met menus herladen
+				$menus = Core::query(
+					"SELECT id, naam FROM menus ORDER BY naam",
+					[]
+				);
+			} else {
+				$form_message = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+					. 'Fout bij toevoegen van menu.<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+			}
+		} catch (PDOException $e) {
+			$form_message = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+				. '<strong>Database fout:</strong> ' . htmlspecialchars($e->getMessage())
+				. '<br><small>Code: ' . $e->getCode() . '</small>'
+				. '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+		}
+	} else {
+		$form_message = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'
+			. 'Geef een naam op.<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+	}
+}
 ?>
 
 <!-- HTML openen -->
@@ -80,6 +112,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_menu_item'])) {
 		<div class="mb-3">
 			<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
 				+ Nieuw Menu Item Toevoegen
+			</button>
+			<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addMenuModal">
+				+ Nieuw Menu
 			</button>
 		</div>
 
@@ -152,6 +187,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_menu_item'])) {
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuleren</button>
 						<button type="submit" name="add_menu_item" class="btn btn-secondary">Toevoegen</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="addMenuModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Nieuw Menu Toevoegen</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<form method="POST">
+					<div class="modal-body">
+						<div class="mb-3">
+							<label for="menu_naam" class="form-label">Naam</label>
+							<input type="text" class="form-control" id="menu_naam" name="menu_naam" required>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuleren</button>
+						<button type="submit" name="add_menu" class="btn btn-primary">Toevoegen</button>
 					</div>
 				</form>
 			</div>

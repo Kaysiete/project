@@ -1,4 +1,5 @@
 <?php
+
 namespace app\Database;
 
 use PDO;
@@ -92,7 +93,7 @@ class Core
 			}
 			return $records;
 		} catch (PDOException $PDOException) {
-			throw new $PDOException;
+			throw $PDOException;
 		}
 	}
 
@@ -120,7 +121,7 @@ class Core
 			}
 			return false;
 		} catch (PDOException $PDOException) {
-			throw new $PDOException;
+			throw $PDOException;
 		}
 	}
 
