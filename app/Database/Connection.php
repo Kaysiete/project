@@ -1,4 +1,5 @@
 <?php
+
 namespace app\Database;
 
 class Connection
@@ -71,8 +72,8 @@ class Connection
 	 * Get WebSB MySQL DNS string
 	 * @return string
 	 */
-	public static function getDNS() :string
+	public static function getDNS(): string
 	{
-		return "mysql:host=" . self::$host . ":" . self::getPort() . ";dbname=" . self::getDatabase();
+		return "mysql:host=" . self::$host . ";port=" . self::getPort() . ";dbname=" . self::getDatabase();
 	}
 }
