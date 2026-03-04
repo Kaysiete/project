@@ -28,8 +28,25 @@ if(Database\Core::exec("update test_table set name = ? where id = ?;", ['nieuwe 
 ?>
 
 <!-- HTML openen -->
-<!-- CSS imports etc. (bootstrap) -->
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- html body -->
+<head>
+	<title>Herd Project</title>
+	<!-- CSS imports etc. (bootstrap) -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+	<!-- html body -->
+
+
+	<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
 
 <!-- Javascript -->
